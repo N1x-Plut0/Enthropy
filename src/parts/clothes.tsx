@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { useAv } from '../render/context';
 import { POCKET_SLIT } from './body';
-import { Sym, type PartOption } from './types';
+import { Sym, W, type PartOption } from './types';
 
 /* ================= Sleeves ================= */
 
@@ -48,17 +48,17 @@ function LongSleeves({ fill, line, bulky = false }: { fill: string; line: string
 /* ================= Tops ================= */
 
 const TEE =
-  'M 184 256 C 168 264, 142 268, 126 282 C 118 300, 120 340, 126 380 C 130 420, 132 470, 128 514 C 170 522, 230 522, 272 514 C 268 470, 270 420, 274 380 C 280 340, 282 300, 274 282 C 258 268, 232 264, 216 256 C 210 266, 190 266, 184 256 Z';
+  'M 184 256 C 168 264, 142 268, 126 282 C 118 300, 120 340, 126 380 C 130 430, 132 500, 128 556 C 170 566, 230 566, 272 556 C 268 500, 270 430, 274 380 C 280 340, 282 300, 274 282 C 258 268, 232 264, 216 256 C 210 266, 190 266, 184 256 Z';
 
 function TeeBody({ print }: { print?: boolean }) {
   const { c } = useAv();
   return (
     <g>
       <path className="o" fill={c.top} d={TEE} />
-      <path className="sh" fill={c.topSh} d="M 128 300 C 124 340, 130 380, 134 420 C 138 460, 136 490, 134 512 L 152 515 C 150 470, 146 420, 142 380 C 138 340, 136 312, 140 292 Z" />
+      <path className="sh" fill={c.topSh} d="M 128 300 C 124 340, 130 380, 134 430 C 138 480, 136 530, 134 556 L 152 559 C 150 500, 146 430, 142 380 C 138 340, 136 312, 140 292 Z" />
       <path className="o2" fill={c.topSh} d="M 182 254 C 188 275, 212 275, 218 254 C 212 268, 188 268, 182 254 Z" />
-      <path className="st" stroke={c.topLine} d="M 150 440 C 154 470, 152 495, 148 512" />
-      <path className="st" stroke={c.topLine} d="M 248 430 C 245 460, 248 490, 252 512" />
+      <path className="st" stroke={c.topLine} d="M 150 470 C 154 500, 152 530, 148 557" />
+      <path className="st" stroke={c.topLine} d="M 248 460 C 245 500, 248 530, 252 557" />
       <path className="st" stroke={c.topLine} opacity={0.6} d="M 170 330 C 182 346, 200 350, 214 346" />
       {print && (
         <g className="ink">
@@ -273,7 +273,7 @@ function Pants({ d, extra }: { d: string; extra?: FC }) {
   return (
     <g>
       <path className="o" fill={c.bottom} d={d} />
-      <path className="st" stroke={c.bottomLine} d="M 136 488 L 264 488" />
+      <path className="st" stroke={c.bottomLine} d={W("M 136 488 L 264 488")} />
       <Pockets />
       {X && <X />}
     </g>
@@ -287,19 +287,19 @@ export const BOTTOMS: PartOption[] = [
     layers: {
       bottom: () => (
         <Pants
-          d="M 136 472 L 264 472 C 270 540, 274 620, 270 700 C 268 760, 262 810, 258 852 L 212 852 C 210 780, 206 690, 202 600 L 198 600 C 194 690, 190 780, 188 852 L 142 852 C 138 810, 132 760, 130 700 C 126 620, 130 540, 136 472 Z"
+          d={W("M 136 472 L 264 472 C 274 540, 284 620, 280 700 C 276 760, 266 800, 258 832 L 212 832 C 208 770, 206 690, 202 600 L 198 600 C 194 690, 192 770, 188 832 L 142 832 C 134 800, 124 760, 120 700 C 116 620, 126 540, 136 472 Z")}
           extra={() => {
             const { c } = useAv();
             return (
               <g>
                 <Sym>
-                  <path className="o" fill={c.bottomSh} d="M 142 850 L 188 850 C 190 860, 189 868, 186 874 L 146 874 C 142 868, 141 860, 142 850 Z" />
-                  <path className="sh" fill={c.bottomSh} d="M 136 520 C 132 600, 134 700, 142 846 L 156 846 C 150 760, 146 640, 150 520 Z" />
-                  <path className="st" stroke={c.bottomLine} d="M 160 640 C 170 680, 168 740, 164 800" />
-                  <path className="st" stroke={c.bottomLine} d="M 176 760 C 172 790, 178 820, 174 846" />
+                  <path className="o" fill={c.bottomSh} d={W("M 140 828 L 190 828 C 192 836, 190 844, 186 850 L 146 850 C 142 844, 139 836, 140 828 Z")} />
+                  <path className="sh" fill={c.bottomSh} d={W("M 136 520 C 132 600, 134 700, 142 828 L 156 828 C 150 760, 146 640, 150 520 Z")} />
+                  <path className="st" stroke={c.bottomLine} d={W("M 160 640 C 170 680, 168 740, 164 800")} />
+                  <path className="st" stroke={c.bottomLine} d={W("M 176 760 C 172 790, 178 810, 174 828")} />
                 </Sym>
-                <path className="ln" d="M 196 488 L 192 516" />
-                <path className="ln" d="M 204 488 L 208 516" />
+                <path className="ln" d={W("M 196 488 L 192 516")} />
+                <path className="ln" d={W("M 204 488 L 208 516")} />
               </g>
             );
           }}
@@ -313,18 +313,18 @@ export const BOTTOMS: PartOption[] = [
     layers: {
       bottom: () => (
         <Pants
-          d="M 136 472 L 264 472 C 274 560, 284 700, 292 902 L 208 904 C 206 800, 204 690, 201 600 L 199 600 C 196 690, 194 800, 192 904 L 108 902 C 116 700, 126 560, 136 472 Z"
+          d={W("M 136 472 L 264 472 C 274 560, 284 700, 292 902 L 208 904 C 206 800, 204 690, 201 600 L 199 600 C 196 690, 194 800, 192 904 L 108 902 C 116 700, 126 560, 136 472 Z")}
           extra={() => {
             const { c } = useAv();
             return (
               <g>
                 <Sym>
-                  <path className="sh" fill={c.bottomSh} d="M 134 520 C 126 620, 118 760, 112 900 L 128 900 C 132 760, 138 640, 146 520 Z" />
-                  <path className="st" stroke={c.bottomLine} d="M 162 620 C 160 700, 156 800, 150 900" />
-                  <path className="st" stroke={c.bottomLine} opacity={0.6} d="M 120 860 C 140 868, 170 868, 190 862" />
+                  <path className="sh" fill={c.bottomSh} d={W("M 134 520 C 126 620, 118 760, 112 900 L 128 900 C 132 760, 138 640, 146 520 Z")} />
+                  <path className="st" stroke={c.bottomLine} d={W("M 162 620 C 160 700, 156 800, 150 900")} />
+                  <path className="st" stroke={c.bottomLine} opacity={0.6} d={W("M 120 860 C 140 868, 170 868, 190 862")} />
                   <rect className="o2" x={152} y={470} width={6} height={22} fill={c.bottom} />
                 </Sym>
-                <path className="st" stroke={c.bottomLine} d="M 200 488 C 200 540, 198 570, 192 594" />
+                <path className="st" stroke={c.bottomLine} d={W("M 200 488 C 200 540, 198 570, 192 594")} />
               </g>
             );
           }}
@@ -338,15 +338,15 @@ export const BOTTOMS: PartOption[] = [
     layers: {
       bottom: () => (
         <Pants
-          d="M 136 472 L 264 472 C 272 560, 276 700, 280 880 L 210 882 C 208 790, 205 690, 201 600 L 199 600 C 195 690, 192 790, 190 882 L 120 880 C 124 700, 128 560, 136 472 Z"
+          d={W("M 136 472 L 264 472 C 272 560, 276 700, 280 880 L 210 882 C 208 790, 205 690, 201 600 L 199 600 C 195 690, 192 790, 190 882 L 120 880 C 124 700, 128 560, 136 472 Z")}
           extra={() => {
             const { c } = useAv();
             return (
               <Sym>
-                <path className="o2" fill={c.bottom} d="M 124 640 L 154 642 L 152 712 L 124 710 Z" />
-                <path className="o2" fill={c.bottomSh} d="M 123 640 L 155 642 L 155 656 L 123 654 Z" />
-                <path className="sh" fill={c.bottomSh} d="M 134 520 C 128 640, 124 760, 122 878 L 136 878 C 138 760, 142 640, 148 520 Z" />
-                <path className="st" stroke={c.bottomLine} d="M 170 740 C 168 790, 166 840, 164 878" />
+                <path className="o2" fill={c.bottom} d={W("M 124 640 L 154 642 L 152 712 L 124 710 Z")} />
+                <path className="o2" fill={c.bottomSh} d={W("M 123 640 L 155 642 L 155 656 L 123 654 Z")} />
+                <path className="sh" fill={c.bottomSh} d={W("M 134 520 C 128 640, 124 760, 122 878 L 136 878 C 138 760, 142 640, 148 520 Z")} />
+                <path className="st" stroke={c.bottomLine} d={W("M 170 740 C 168 790, 166 840, 164 878")} />
               </Sym>
             );
           }}
@@ -360,13 +360,13 @@ export const BOTTOMS: PartOption[] = [
     layers: {
       bottom: () => (
         <Pants
-          d="M 136 472 L 264 472 C 272 540, 282 600, 286 666 L 206 670 C 204 632, 202 612, 200 598 C 198 612, 196 632, 194 670 L 114 666 C 118 600, 128 540, 136 472 Z"
+          d={W("M 136 472 L 264 472 C 272 540, 282 600, 286 666 L 206 670 C 204 632, 202 612, 200 598 C 198 612, 196 632, 194 670 L 114 666 C 118 600, 128 540, 136 472 Z")}
           extra={() => {
             const { c } = useAv();
             return (
               <Sym>
-                <path className="sh" fill={c.bottomSh} d="M 132 520 C 126 580, 120 630, 118 664 L 134 664 C 136 630, 140 580, 146 520 Z" />
-                <path className="st" stroke={c.bottomLine} d="M 160 600 C 158 620, 156 640, 156 666" />
+                <path className="sh" fill={c.bottomSh} d={W("M 132 520 C 126 580, 120 630, 118 664 L 134 664 C 136 630, 140 580, 146 520 Z")} />
+                <path className="st" stroke={c.bottomLine} d={W("M 160 600 C 158 620, 156 640, 156 666")} />
               </Sym>
             );
           }}
@@ -382,12 +382,12 @@ export const BOTTOMS: PartOption[] = [
         const { c } = useAv();
         return (
           <g>
-            <path className="o" fill={c.bottom} d="M 138 470 L 262 470 L 294 630 C 240 642, 160 642, 106 630 Z" />
-            <path className="st" stroke={c.bottomLine} d="M 138 488 L 262 488" />
+            <path className="o" fill={c.bottom} d={W("M 138 470 L 262 470 L 294 630 C 240 642, 160 642, 106 630 Z")} />
+            <path className="st" stroke={c.bottomLine} d={W("M 138 488 L 262 488")} />
             {[150, 172, 200, 228, 250].map((x) => (
-              <path key={x} className="st" stroke={c.bottomLine} d={`M ${x} 490 L ${x + (x - 200) * 0.45} 636`} />
+              <path key={x} className="st" stroke={c.bottomLine} d={W(`M ${x} 490 L ${x + (x - 200) * 0.45} 636`)} />
             ))}
-            <path className="sh" fill={c.bottomSh} d="M 138 490 L 106 630 L 124 634 L 150 490 Z" />
+            <path className="sh" fill={c.bottomSh} d={W("M 138 490 L 106 630 L 124 634 L 150 490 Z")} />
           </g>
         );
       },
@@ -419,13 +419,14 @@ export const SHOES: PartOption[] = [
           <g>
             <Socks />
             <Sym>
-              <path className="o" fill={c.shoesSh} d="M 158 854 L 160 842 L 186 842 L 188 854 Z" />
-              <path className="o" fill={c.shoes} d="M 154 852 C 150 870, 140 888, 138 902 C 136 916, 150 922, 172 922 C 192 922, 200 914, 196 900 C 194 884, 190 868, 188 852 Z" />
-              <path className="o2" fill={c.sole} d="M 148 884 C 160 880, 170 882, 176 890 C 166 892, 154 892, 146 896 Z" />
-              <path className="o" fill={c.sole} d="M 134 904 C 132 916, 136 932, 146 934 L 194 934 C 202 932, 204 916, 200 904 C 180 912, 156 912, 134 904 Z" />
-              <path className="ln" opacity={0.6} d="M 136 920 C 160 924, 182 924, 202 920" />
-              <path className="ln" d="M 162 866 L 182 868" />
-              <path className="ln" d="M 160 876 L 184 878" />
+              <path className="o" fill={c.shoesSh} d="M 156 856 L 158 838 L 188 838 L 190 856 Z" />
+              <path className="o" fill={c.shoes} d="M 152 850 C 146 868, 134 886, 132 902 C 130 918, 150 924, 172 924 C 196 924, 206 914, 202 898 C 198 882, 194 866, 192 850 Z" />
+              <path className="o2" fill={c.sole} d="M 134 900 C 146 890, 160 886, 172 890 C 184 886, 196 888, 203 898 C 190 904, 150 906, 134 900 Z" />
+              <path className="ink" fill="none" stroke={c.accent} strokeWidth={3} strokeLinecap="round" d="M 142 884 C 154 872, 170 868, 186 874" />
+              <path className="o" fill={c.sole} d="M 128 902 C 124 916, 130 936, 144 938 L 196 938 C 208 936, 212 916, 206 902 C 184 912, 150 912, 128 902 Z" />
+              <path className="ln" opacity={0.6} d="M 130 922 C 156 927, 184 927, 208 922" />
+              <path className="ln" stroke={c.sole} d="M 160 860 L 184 862" />
+              <path className="ln" d="M 158 870 L 186 872" />
             </Sym>
           </g>
         );

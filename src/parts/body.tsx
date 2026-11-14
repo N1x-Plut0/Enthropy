@@ -1,5 +1,5 @@
 import { useAv } from '../render/context';
-import { Sym, type PartOption } from './types';
+import { Sym, W, type PartOption } from './types';
 
 /* ---------- Geometry shared with clothing ---------- */
 
@@ -32,8 +32,8 @@ function Body() {
   return (
     <g>
       <Sym>
-        <path className="o" fill={c.skin} d={LEG} />
-        <path className="ln" opacity={0.35} d="M 160 692 C 166 697, 176 697, 184 692" />
+        <path className="o" fill={c.skin} d={W(LEG)} />
+        <path className="ln" opacity={0.35} d={W("M 160 692 C 166 697, 176 697, 184 692")} />
       </Sym>
       <path className="o" fill={c.skin} d={TORSO} />
       <path className="f" fill={c.skin} d="M 186 200 L 186 266 C 194 272, 206 272, 214 266 L 214 200 Z" />

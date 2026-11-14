@@ -22,7 +22,16 @@ const SOFT: EyeShape = {
   iris: { cx: 169, cy: 169, rx: 11.5, ry: 14 },
 };
 
+const CALM: EyeShape = {
+  white: 'M 145 170 C 152 160, 178 156, 191 163 C 189 173, 181 180, 168 181 C 156 181, 149 177, 145 170 Z',
+  lash: 'M 192 164 C 180 154, 157 155, 145 166 L 137 161 C 140 167, 142 171, 145 174 C 156 161, 178 159, 192 164 Z',
+  lower: 'M 152 178 C 158 182, 166 183, 174 182',
+  crease: 'M 149 156 C 160 150, 178 150, 189 155',
+  iris: { cx: 169, cy: 170, rx: 11, ry: 13 },
+};
+
 export const EYE_SHAPES: Record<string, EyeShape> = {
+  calm: CALM,
   soft: SOFT,
   round: {
     white: 'M 145 169 C 147 153, 182 149, 191 162 C 193 176, 184 187, 168 187 C 154 187, 145 180, 145 169 Z',
@@ -94,7 +103,7 @@ function EyeOne({ shape, closed }: { shape: EyeShape; closed: boolean }) {
 function eyesFor(id: string): FC {
   return function Eyes() {
     const { ch } = useAv();
-    const shape = EYE_SHAPES[id] ?? SOFT;
+    const shape = EYE_SHAPES[id] ?? CALM;
     const e = ch.expression;
     return (
       <g>
@@ -108,6 +117,7 @@ function eyesFor(id: string): FC {
 }
 
 export const EYES: PartOption[] = [
+  { id: 'calm', label: 'Спокойные' },
   { id: 'soft', label: 'Мягкие' },
   { id: 'round', label: 'Круглые' },
   { id: 'sharp', label: 'Лисьи' },

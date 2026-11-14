@@ -1,15 +1,15 @@
 import { memo, useId, useMemo, type Ref } from 'react';
 import type { Character, Format, StyleId } from '../model/character';
-import { BASE, HAND_CLIP } from '../parts/body';
+import { BASE, HAND_CLIP, POCKET_SLIT } from '../parts/body';
 import { EYE_SHAPES } from '../parts/face';
 import { ALL_SLOTS } from '../parts/registry';
-import { LAYER_ORDER, MIR, type LayerName, type PartOption } from '../parts/types';
+import { HEAD_LAYERS, HEAD_TF, LAYER_ORDER, LEG_TF, LEG_PIVOT, LEG_STRETCH, MIR, type LayerName, type PartOption } from '../parts/types';
 import { shade } from './color';
 import { AvCtx, derive, useAv } from './context';
 
 export const VIEWBOX: Record<Format, string> = {
-  full: '20 -4 360 952',
-  portrait: '70 20 260 300',
+  full: '20 40 360 1030',
+  portrait: '100 72 200 230',
 };
 
 const SK = '#3d3436';
@@ -60,11 +60,17 @@ function LayerStack() {
               {render('bottom')}
               {render('top')}
               {render('outer')}
+              <path className="ln" d={POCKET_SLIT} />
+              <path className="ln" d={POCKET_SLIT} transform={MIR} />
             </g>
           ) : null;
         }
         if (l === 'sleeves' && ch.parts.outer !== 'none') return null;
-        return <g key={l}>{render(l)}</g>;
+        return (
+          <g key={l} transform={HEAD_LAYERS.has(l) ? HEAD_TF : l === 'shoes' ? LEG_TF : undefined}>
+            {render(l)}
+          </g>
+        );
       })}
     </>
   );
@@ -72,7 +78,7 @@ function LayerStack() {
 
 function Defs() {
   const { uid, c, ch } = useAv();
-  const eye = EYE_SHAPES[ch.parts.eyes] ?? EYE_SHAPES.soft;
+  const eye = EYE_SHAPES[ch.parts.eyes] ?? EYE_SHAPES.calm;
   return (
     <defs>
       <linearGradient id={`${uid}-iris`} x1="0" y1="0" x2="0" y2="1">
@@ -174,7 +180,7 @@ function Background({ transparent }: { transparent?: boolean }) {
       )}
       {p === 'doodles' && <Doodles color={c.bgInk} />}
       {ch.style === 'sketch' && <rect x={-200} y={-200} width={800} height={1400} filter={`url(#${uid}-paper)`} opacity={0.5} />}
-      <ellipse cx={200} cy={934} rx={96} ry={10} fill="#000" opacity={0.12} />
+      <ellipse cx={200} cy={LEG_PIVOT + (934 - LEG_PIVOT) * LEG_STRETCH + 10} rx={96} ry={10} fill="#000" opacity={0.12} />
     </g>
   );
 }

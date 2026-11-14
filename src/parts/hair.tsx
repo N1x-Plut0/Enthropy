@@ -60,8 +60,8 @@ function style(back: FC, locks?: FC): PartOption['layers'] {
       const L = locks;
       return (
         <g>
-          <Cap />
           {L && <L />}
+          <Cap />
         </g>
       );
     },
@@ -71,6 +71,31 @@ function style(back: FC, locks?: FC): PartOption['layers'] {
 /* ---------- hairstyles ---------- */
 
 export const HAIRSTYLES: PartOption[] = [
+  {
+    id: 'lowbun',
+    label: 'Низкий пучок',
+    layers: style(
+      () => {
+        const { c } = useAv();
+        return (
+          <g>
+            <Back d="M 116 150 C 108 90, 150 46, 200 46 C 250 46, 292 90, 284 150 C 286 184, 280 208, 268 226 L 132 226 C 120 208, 114 184, 116 150 Z" />
+            <path className="o" fill={c.hairFront} d="M 270 168 C 300 160, 322 184, 318 212 C 314 238, 290 250, 270 244 C 252 238, 246 214, 252 196 C 256 182, 262 172, 270 168 Z" />
+            <path className="st" stroke={c.hairLine} d="M 266 182 C 288 174, 306 192, 304 212 C 302 228, 288 236, 274 232" />
+            <path className="st" stroke={c.hairLine} d="M 312 196 C 324 188, 330 178, 330 168" />
+            <path className="st" stroke={c.hairLine} d="M 300 244 C 306 256, 304 266, 298 274" />
+            <path className="o2" fill={c.accent} d="M 258 186 C 264 180, 272 182, 270 190 L 262 206 C 256 204, 254 194, 258 186 Z" />
+          </g>
+        );
+      },
+      () => (
+        <Locks
+          d="M 120 116 C 108 156, 110 204, 126 250 C 128 226, 132 202, 136 184 C 138 196, 140 206, 142 214 C 144 182, 146 148, 150 118 Z"
+          strands={['M 130 130 C 122 170, 122 210, 128 240', 'M 140 140 C 138 170, 140 192, 142 208']}
+        />
+      ),
+    ),
+  },
   {
     id: 'bun',
     label: 'Пучок',
@@ -244,6 +269,33 @@ const MESSY_TIPS: [number, number][] = [
 ];
 
 export const BANGS: PartOption[] = [
+  {
+    id: 'parted',
+    label: 'На пробор',
+    layers: {
+      bangs: () => {
+        const { c } = useAv();
+        const piece = (
+          <g>
+            <path
+              className="o"
+              fill={c.hairFront}
+              d="M 204 88 C 176 86, 140 98, 122 128 C 116 150, 120 176, 128 196 C 134 180, 140 168, 148 158 C 148 162, 149 166, 150 170 C 156 154, 164 140, 176 130 C 178 138, 182 146, 186 152 C 188 132, 194 114, 204 98 Z"
+            />
+            <path className="st" stroke={c.hairLine} d="M 194 104 C 172 116, 150 140, 136 182" />
+            <path className="st" stroke={c.hairLine} d="M 186 110 C 172 124, 162 140, 154 160" />
+            <path className="st" stroke={c.hairLine} d="M 196 108 C 190 120, 186 134, 184 146" />
+          </g>
+        );
+        return (
+          <g>
+            <Sym>{piece}</Sym>
+            <path className="st" stroke={c.hairLine} d="M 200 52 L 201 96" />
+          </g>
+        );
+      },
+    },
+  },
   {
     id: 'curtain',
     label: 'Шторки',
