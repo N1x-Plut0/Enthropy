@@ -6,18 +6,24 @@ import { MIR, Sym, type PartOption } from './types';
 
 const CAP =
   'M 116 156 C 108 92, 150 48, 200 48 C 250 48, 292 92, 284 156 C 276 128, 258 108, 236 102 C 222 98, 210 97, 200 97 C 190 97, 178 98, 164 102 C 142 108, 124 128, 116 156 Z';
-const RING = 'M 138 94 C 162 76, 238 76, 262 94 L 258 100 C 236 84, 164 84, 142 100 Z';
 
 function Cap() {
   const { c } = useAv();
   return (
     <g>
+      {/* flyaway clumps on the silhouette */}
+      <path className="o" fill={c.hairFront} d="M 198 50 C 196 42, 190 36, 182 34 C 192 33, 200 38, 205 49 Z" />
       <path className="o" fill={c.hairFront} d={CAP} />
-      <path className="f" fill={c.hairHl} opacity={0.55} d={RING} />
-      <path className="st" stroke={c.hairLine} d="M 200 52 C 184 64, 168 80, 158 100" />
-      <path className="st" stroke={c.hairLine} d="M 202 52 C 218 64, 234 80, 244 100" />
-      <path className="st" stroke={c.hairLine} d="M 176 58 C 156 72, 140 92, 130 120" />
-      <path className="st" stroke={c.hairLine} d="M 226 58 C 246 72, 262 92, 270 120" />
+      {/* one cel-shadow tone, like the refs */}
+      <path className="sh" fill={c.hairSh} opacity={0.75} d="M 232 62 C 262 76, 282 104, 284 150 C 274 126, 258 110, 238 102 C 246 90, 244 76, 232 62 Z" />
+      <path className="sh" fill={c.hairSh} opacity={0.75} d="M 152 66 C 132 80, 118 104, 116 140 C 124 120, 136 108, 150 100 C 146 88, 146 76, 152 66 Z" />
+      <path className="f" fill={c.hairHl} opacity={0.6} d="M 176 62 C 186 58, 196 58, 204 60 L 200 64 C 192 63, 184 64, 178 66 Z" />
+      <path className="f" fill={c.hairHl} opacity={0.6} d="M 214 62 C 224 62, 234 66, 240 72 L 236 74 C 230 70, 222 67, 214 66 Z" />
+      {['M 200 52 C 184 64, 168 80, 158 100', 'M 202 52 C 218 64, 234 80, 244 100', 'M 176 58 C 156 72, 140 92, 130 120',
+        'M 226 58 C 246 72, 262 92, 270 120', 'M 190 54 C 176 66, 164 82, 150 104', 'M 212 54 C 230 68, 244 84, 256 104',
+        'M 164 62 C 146 74, 132 92, 124 112'].map((d, i) => (
+        <path key={i} className="st" stroke={c.hairLine} d={d} />
+      ))}
     </g>
   );
 }
@@ -79,11 +85,9 @@ export const HAIRSTYLES: PartOption[] = [
         const { c } = useAv();
         return (
           <g>
-            <Back d="M 116 150 C 108 90, 150 46, 200 46 C 250 46, 292 90, 284 150 C 286 184, 280 208, 268 226 L 132 226 C 120 208, 114 184, 116 150 Z" />
+            <Back d="M 116 150 C 108 90, 150 46, 200 46 C 250 46, 292 90, 284 150 C 286 184, 280 206, 262 220 C 240 232, 160 232, 138 220 C 120 206, 114 184, 116 150 Z" />
             <path className="o" fill={c.hairFront} d="M 270 168 C 300 160, 322 184, 318 212 C 314 238, 290 250, 270 244 C 252 238, 246 214, 252 196 C 256 182, 262 172, 270 168 Z" />
             <path className="st" stroke={c.hairLine} d="M 266 182 C 288 174, 306 192, 304 212 C 302 228, 288 236, 274 232" />
-            <path className="st" stroke={c.hairLine} d="M 312 196 C 324 188, 330 178, 330 168" />
-            <path className="st" stroke={c.hairLine} d="M 300 244 C 306 256, 304 266, 298 274" />
             <path className="o2" fill={c.accent} d="M 258 186 C 264 180, 272 182, 270 190 L 262 206 C 256 204, 254 194, 258 186 Z" />
           </g>
         );
@@ -252,7 +256,6 @@ function bangsFrom(d: string, strands: string[] = []): FC {
     return (
       <g>
         <path className="o" fill={c.hairFront} d={d} />
-        <path className="f" fill={c.hairHl} opacity={0.45} d="M 150 100 C 170 92, 230 92, 250 100 L 248 105 C 228 98, 172 98, 152 105 Z" />
         {strands.map((s, i) => (
           <path key={i} className="st" stroke={c.hairLine} d={s} />
         ))}
@@ -278,9 +281,13 @@ export const BANGS: PartOption[] = [
         const piece = (
           <g>
             <path
-              className="o"
+              className="f"
               fill={c.hairFront}
               d="M 204 88 C 176 86, 140 98, 122 128 C 116 150, 120 176, 128 196 C 134 180, 140 168, 148 158 C 148 162, 149 166, 150 170 C 156 154, 164 140, 176 130 C 178 138, 182 146, 186 152 C 188 132, 194 114, 204 98 Z"
+            />
+            <path
+              className="ln"
+              d="M 122 128 C 116 150, 120 176, 128 196 C 134 180, 140 168, 148 158 C 148 162, 149 166, 150 170 C 156 154, 164 140, 176 130 C 178 138, 182 146, 186 152 C 188 132, 194 114, 204 98"
             />
             <path className="st" stroke={c.hairLine} d="M 194 104 C 172 116, 150 140, 136 182" />
             <path className="st" stroke={c.hairLine} d="M 186 110 C 172 124, 162 140, 154 160" />
@@ -290,6 +297,7 @@ export const BANGS: PartOption[] = [
         return (
           <g>
             <Sym>{piece}</Sym>
+            <path className="o" fill={c.hairFront} d="M 208 96 C 200 116, 194 136, 194 160 C 200 142, 206 124, 214 104 Z" />
             <path className="st" stroke={c.hairLine} d="M 200 52 L 201 96" />
           </g>
         );

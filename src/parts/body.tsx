@@ -55,6 +55,11 @@ function Arms() {
       <path className="f" fill={c.skin} d={a.fill} />
       <path className="ln" d={a.outer} />
       <path className="ln" d={a.inner} />
+      <path
+        className="sh"
+        fill={c.skinSh}
+        d={ch.pose === 'stand' ? 'M 113 408 L 147 410 L 146 432 C 134 426, 122 426, 112 432 Z' : 'M 107 408 L 139 410 L 136 432 C 126 426, 116 428, 107 434 Z'}
+      />
       {ch.pose === 'stand' && (
         <g>
           <path className="o" fill={c.skin} d="M 115 544 C 108 562, 110 586, 122 592 C 134 596, 145 582, 141 560 L 140 544 Z" />

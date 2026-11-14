@@ -75,7 +75,7 @@ function EyeOne({ shape, closed }: { shape: EyeShape; closed: boolean }) {
       <path className="f" fill="#fffaf6" d={shape.white} />
       <g clipPath={`url(#${uid}-eye)`}>
         <ellipse className="f" cx={cx} cy={cy} rx={rx} ry={ry} fill={`url(#${uid}-iris)`} />
-        <ellipse className="f" cx={cx} cy={cy + ry * 0.5} rx={rx * 0.72} ry={ry * 0.32} fill={c.eyesLight} opacity={0.7} />
+        <ellipse className="f" cx={cx} cy={cy + ry * 0.55} rx={rx * 0.7} ry={ry * 0.3} fill={c.eyesLight} opacity={0.55} />
         <ellipse className="ink" cx={cx} cy={cy + 1} rx={rx * pupil} ry={ry * (pupil + 0.08)} fill={c.eyesDark} />
         <ellipse className="ink" cx={cx} cy={cy} rx={rx} ry={ry} fill="none" stroke={c.eyesDark} strokeWidth={1.2} opacity={0.8} />
         <path className="sh" fill="#4a2a3a" opacity={0.28} d="M 136 140 L 200 140 L 200 164 C 182 156, 156 157, 136 174 Z" />
@@ -286,12 +286,8 @@ function Blush({ strong = false }: { strong?: boolean }) {
   const { c } = useAv();
   return (
     <Sym>
-      <ellipse className="f" cx={160} cy={198} rx={15} ry={6.5} fill={c.blush} opacity={strong ? 0.75 : 0.5} />
-      <g className="ln" opacity={0.45}>
-        <path d="M 154 196 L 151 201" />
-        <path d="M 160 196 L 157 201" />
-        <path d="M 166 196 L 163 201" />
-      </g>
+      <ellipse className="f" cx={158} cy={194} rx={16} ry={5.5} fill={c.blush} opacity={strong ? 0.55 : 0.32} />
+      <ellipse className="f" cx={158} cy={193} rx={9} ry={3} fill={c.blush} opacity={strong ? 0.4 : 0.22} />
     </Sym>
   );
 }

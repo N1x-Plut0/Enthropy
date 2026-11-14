@@ -57,9 +57,14 @@ function TeeBody({ print }: { print?: boolean }) {
       <path className="o" fill={c.top} d={TEE} />
       <path className="sh" fill={c.topSh} d="M 128 300 C 124 340, 130 380, 134 430 C 138 480, 136 530, 134 556 L 152 559 C 150 500, 146 430, 142 380 C 138 340, 136 312, 140 292 Z" />
       <path className="o2" fill={c.topSh} d="M 182 254 C 188 275, 212 275, 218 254 C 212 268, 188 268, 182 254 Z" />
-      <path className="st" stroke={c.topLine} d="M 150 470 C 154 500, 152 530, 148 557" />
-      <path className="st" stroke={c.topLine} d="M 248 460 C 245 500, 248 530, 252 557" />
-      <path className="st" stroke={c.topLine} opacity={0.6} d="M 170 330 C 182 346, 200 350, 214 346" />
+      {/* cast shadow under the collar and soft drape */}
+      <path className="sh" fill={c.topSh} d="M 228 420 C 240 450, 246 500, 244 556 L 270 556 C 268 500, 266 450, 262 410 C 250 420, 238 424, 228 420 Z" />
+      <path className="st" stroke={c.topLine} d="M 152 420 C 160 440, 164 470, 160 500 C 158 520, 154 540, 150 558" />
+      <path className="st" stroke={c.topLine} d="M 240 416 C 236 450, 240 490, 246 520" />
+      <path className="st" stroke={c.topLine} opacity={0.7} d="M 160 300 C 172 318, 186 328, 196 332" />
+      <path className="st" stroke={c.topLine} opacity={0.7} d="M 242 300 C 232 314, 222 322, 214 326" />
+      <path className="st" stroke={c.topLine} opacity={0.6} d="M 182 470 C 188 490, 190 520, 186 548" />
+      <path className="st" stroke={c.topLine} opacity={0.6} d="M 214 480 C 210 500, 212 524, 216 550" />
       {print && (
         <g className="ink">
           <text x={200} y={340} textAnchor="middle" fontFamily="Georgia, serif" fontStyle="italic" fontSize={26} fill={c.accent}>
@@ -79,8 +84,10 @@ const TeeSleeves: FC = () => {
   return (
     <Sym>
       <path className="o" fill={c.top} d={SHORT_SLEEVE} />
-      <path className="st" stroke={c.topLine} d="M 98 396 C 114 401, 134 404, 150 402" />
-      <path className="st" stroke={c.topLine} opacity={0.6} d="M 116 340 C 122 352, 130 360, 140 364" />
+      <path className="sh" fill={c.topSh} d="M 152 312 C 146 350, 146 384, 150 412 L 136 414 C 136 384, 140 350, 148 306 Z" />
+      <path className="sh" fill={c.topSh} d="M 97 400 C 112 406, 134 409, 150 406 L 150 414 C 134 418, 112 414, 96 408 Z" />
+      <path className="st" stroke={c.topLine} opacity={0.7} d="M 114 330 C 118 350, 120 370, 118 396" />
+      <path className="st" stroke={c.topLine} opacity={0.7} d="M 128 360 C 132 372, 134 386, 132 402" />
     </Sym>
   );
 };
@@ -295,9 +302,16 @@ export const BOTTOMS: PartOption[] = [
                 <Sym>
                   <path className="o" fill={c.bottomSh} d={W("M 140 828 L 190 828 C 192 836, 190 844, 186 850 L 146 850 C 142 844, 139 836, 140 828 Z")} />
                   <path className="sh" fill={c.bottomSh} d={W("M 136 520 C 132 600, 134 700, 142 828 L 156 828 C 150 760, 146 640, 150 520 Z")} />
-                  <path className="st" stroke={c.bottomLine} d={W("M 160 640 C 170 680, 168 740, 164 800")} />
-                  <path className="st" stroke={c.bottomLine} d={W("M 176 760 C 172 790, 178 810, 174 828")} />
+                  <path className="sh" fill={c.bottomSh} d={W("M 200 600 C 196 690, 192 770, 188 828 L 176 828 C 182 760, 188 680, 194 604 Z")} />
+                  <path className="st" stroke={c.bottomLine} d={W("M 146 660 C 158 672, 172 676, 186 670")} />
+                  <path className="st" stroke={c.bottomLine} d={W("M 150 690 C 160 698, 170 700, 180 696")} />
+                  <path className="st" stroke={c.bottomLine} d={W("M 140 770 C 152 780, 168 782, 184 776")} />
+                  <path className="st" stroke={c.bottomLine} d={W("M 146 796 C 156 806, 170 806, 186 800")} />
+                  <path className="st" stroke={c.bottomLine} d={W("M 142 812 C 154 820, 170 822, 188 816")} />
+                  <path className="st" stroke={c.bottomLine} opacity={0.6} d={W("M 152 580 C 156 610, 156 630, 152 650")} />
+                  <path className="st" stroke={c.bottomLine} d={W("M 152 836 L 154 846 M 166 836 L 166 848 M 178 836 L 176 846")} />
                 </Sym>
+                <path className="sh" fill={c.bottomSh} d={W("M 126 556 C 170 566, 230 566, 274 556 L 276 578 C 230 588, 170 588, 124 578 Z")} />
                 <path className="ln" d={W("M 196 488 L 192 516")} />
                 <path className="ln" d={W("M 204 488 L 208 516")} />
               </g>

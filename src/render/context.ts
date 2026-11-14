@@ -2,7 +2,7 @@ import { createContext, useContext } from 'react';
 import type { Character } from '../model/character';
 import { luminance, mix, shade } from './color';
 
-export const LINE = '#3a2a2f';
+export const LINE = '#3b2926';
 
 export function derive(ch: Character, uid: string) {
   const k = ch.colors;

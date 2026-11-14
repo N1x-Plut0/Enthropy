@@ -3,21 +3,21 @@ import type { Character, Format, StyleId } from '../model/character';
 import { BASE, HAND_CLIP, POCKET_SLIT } from '../parts/body';
 import { EYE_SHAPES } from '../parts/face';
 import { ALL_SLOTS } from '../parts/registry';
-import { HEAD_LAYERS, HEAD_TF, LAYER_ORDER, LEG_TF, LEG_PIVOT, LEG_STRETCH, MIR, type LayerName, type PartOption } from '../parts/types';
+import { HEAD_LAYERS, HEAD_TF, LAYER_ORDER, LEG_TF, MIR, SHOE_SHIFT, type LayerName, type PartOption } from '../parts/types';
 import { shade } from './color';
 import { AvCtx, derive, useAv } from './context';
 
 export const VIEWBOX: Record<Format, string> = {
-  full: '20 40 360 1030',
+  full: '20 40 360 1010',
   portrait: '100 72 200 230',
 };
 
 const SK = '#3d3436';
 const AV_CSS = `
-.av-clean .o{stroke:#3a2a2f;stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}
-.av-clean .o2{stroke:#3a2a2f;stroke-width:1.4;stroke-linejoin:round}
-.av-clean .ln{fill:none;stroke:#3a2a2f;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.av-clean .st{fill:none;stroke-width:1.3;stroke-linecap:round}
+.av-clean .o{stroke:#3b2926;stroke-width:1.7;stroke-linejoin:round;stroke-linecap:round}
+.av-clean .o2{stroke:#3b2926;stroke-width:1.1;stroke-linejoin:round}
+.av-clean .ln{fill:none;stroke:#3b2926;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
+.av-clean .st{fill:none;stroke-width:1;stroke-linecap:round}
 .av-sketch .o,.av-sketch .o2,.av-sketch .ln{stroke:${SK};stroke-linejoin:round;stroke-linecap:round}
 .av-sketch .o{stroke-width:1.8}.av-sketch .o2{stroke-width:1.2}
 .av-sketch .ln{fill:none;stroke-width:1.3}
@@ -83,7 +83,8 @@ function Defs() {
     <defs>
       <linearGradient id={`${uid}-iris`} x1="0" y1="0" x2="0" y2="1">
         <stop offset="0" stopColor={c.eyesDark} />
-        <stop offset="0.55" stopColor={c.eyes} />
+        <stop offset="0.38" stopColor={c.eyesDark} />
+        <stop offset="0.7" stopColor={c.eyes} />
         <stop offset="1" stopColor={shade(c.eyes, 0.3)} />
       </linearGradient>
       <linearGradient id={`${uid}-hg`} gradientUnits="userSpaceOnUse" x1="0" y1="150" x2="0" y2="480">
@@ -180,7 +181,7 @@ function Background({ transparent }: { transparent?: boolean }) {
       )}
       {p === 'doodles' && <Doodles color={c.bgInk} />}
       {ch.style === 'sketch' && <rect x={-200} y={-200} width={800} height={1400} filter={`url(#${uid}-paper)`} opacity={0.5} />}
-      <ellipse cx={200} cy={LEG_PIVOT + (934 - LEG_PIVOT) * LEG_STRETCH + 10} rx={96} ry={10} fill="#000" opacity={0.12} />
+      <ellipse cx={200} cy={938 + SHOE_SHIFT} rx={96} ry={10} fill="#000" opacity={0.12} />
     </g>
   );
 }

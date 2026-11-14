@@ -49,8 +49,9 @@ export const HEAD_LAYERS = new Set<string>([
 
 export const LEG_PIVOT = 560;
 export const LEG_STRETCH = 1.3;
-/** Group transform for elements lying entirely below the leg pivot. */
-export const LEG_TF = `translate(0 ${LEG_PIVOT}) scale(1 ${LEG_STRETCH}) translate(0 ${-LEG_PIVOT})`;
+/** Shoes keep their shape and just move down to the stretched ankle. */
+export const SHOE_SHIFT = (852 - LEG_PIVOT) * (LEG_STRETCH - 1);
+export const LEG_TF = `translate(0 ${SHOE_SHIFT})`;
 export const legY = (y: number) => (y <= LEG_PIVOT ? y : LEG_PIVOT + (y - LEG_PIVOT) * LEG_STRETCH);
 
 /** Warp an absolute path (M/L/C/Q/Z with x,y pairs) so its lower part follows the leg stretch. */
