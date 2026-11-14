@@ -6,11 +6,14 @@
 
 ```bash
 npm install
-npm run dev
+npm run dev      # разработка
+npm run site     # собрать сайт в корень репозитория (его отдаёт GitHub Pages)
 ```
+
+Исходники — в `app/`. Файлы `index.html`, `assets/`, `bases/` в корне — это собранный сайт, руками их не править.
 
 ## Как добавить нового персонажа-базу
 
 1. Оцифровать реф в SVG (`pip install vtracer`, параметры — в `tools/build_bases.py`, см. историю).
 2. Описать базу в `BASES` в `tools/build_bases.py`: прототипы цветов зон и вертикальные полосы фигуры.
-3. `python3 tools/build_bases.py <папка-с-svg> public/bases` — появятся `public/bases/<id>.json` и обновится `index.json`.
+3. `python3 tools/build_bases.py <папка-с-svg> app/public/bases` — появятся `app/public/bases/<id>.json` и обновится `index.json`.

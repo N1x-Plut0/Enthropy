@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "tsc -b --noEmit",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "site": "npm run build && rm -rf assets bases index.html && cp -r dist/. . && touch .nojekyll"
   },
   "dependencies": {
     "idb-keyval": "6.2.1",

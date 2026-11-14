@@ -2,7 +2,7 @@
 
 Each path is assigned a zone by its vertical band on the figure and the nearest
 prototype colour allowed in that band. Usage:
-  python3 tools/build_bases.py <traced-dir> public/bases
+  python3 tools/build_bases.py <traced-dir> app/public/bases
 """
 import json, re, sys, statistics
 
