@@ -1,20 +1,9 @@
 import { useCallback, useRef, useState } from 'react';
-import {
-  EXPRESSIONS,
-  FORMATS,
-  POSES,
-  STYLES,
-  type Character,
-  type Colors,
-  type Format,
-  type Parts,
-} from '../model/character';
-import { randomize } from '../model/random';
-import { CATEGORIES } from '../parts/registry';
-import { Avatar } from '../render/Avatar';
+import { FORMATS, PALETTES, ZONES, type Character, type Format, type Zone } from '../model/character';
+import { useBase, useBaseIndex } from '../render/bases';
 import { downloadPNG, downloadSVG } from '../render/export';
+import { TracedAvatar } from '../render/TracedAvatar';
 import { ColorRow } from './ColorRow';
-import { PartGrid } from './PartGrid';
 
 interface Props {
   ch: Character;
@@ -29,58 +18,31 @@ interface Props {
   setFormat: (f: Format) => void;
 }
 
-function Seg<T extends string>({
-  items,
-  value,
-  onChange,
-  label,
-}: {
-  items: { id: T; label: string }[];
-  value: T;
-  onChange: (v: T) => void;
-  label: string;
-}) {
-  return (
-    <div className="seg" role="radiogroup" aria-label={label}>
-      {items.map((it) => (
-        <button
-          key={it.id}
-          type="button"
-          role="radio"
-          aria-checked={value === it.id}
-          className={value === it.id ? 'is-on' : ''}
-          onClick={() => onChange(it.id)}
-        >
-          {it.label}
-        </button>
-      ))}
-    </div>
-  );
-}
+const pick = <T,>(a: T[]): T => a[Math.floor(Math.random() * a.length)];
 
 export function Editor({ ch, update, undo, redo, canUndo, canRedo, onSave, onNew, format, setFormat }: Props) {
-  const [catId, setCatId] = useState(CATEGORIES[0].id);
-  const cat = CATEGORIES.find((c) => c.id === catId) ?? CATEGORIES[0];
   const svgRef = useRef<SVGSVGElement>(null);
   const [busy, setBusy] = useState(false);
+  const bases = useBaseIndex();
+  const data = useBase(ch.base);
 
-  const onPick = useCallback(
-    (key: keyof Parts, id: string) =>
+  const onColor = useCallback(
+    (z: Zone, v: string | undefined) =>
       update((c) => {
-        const v = c.parts[key];
-        if (Array.isArray(v)) {
-          const next = v.includes(id) ? v.filter((x) => x !== id) : [...v, id];
-          return { ...c, parts: { ...c.parts, [key]: next } };
-        }
-        return { ...c, parts: { ...c.parts, [key]: id } };
+        const colors = { ...c.colors };
+        if (v) colors[z] = v;
+        else delete colors[z];
+        return { ...c, colors };
       }),
     [update],
   );
 
-  const onColor = useCallback(
-    (k: keyof Colors, v: string) => update((c) => ({ ...c, colors: { ...c.colors, [k]: v } })),
-    [update],
-  );
+  const randomColors = () =>
+    update((c) => {
+      const colors: Character['colors'] = {};
+      for (const z of ZONES) if (Math.random() < 0.8) colors[z.id] = pick(PALETTES[z.id]);
+      return { ...c, colors };
+    });
 
   const exportPng = async () => {
     if (!svgRef.current) return;
@@ -104,46 +66,19 @@ export function Editor({ ch, update, undo, redo, canUndo, canRedo, onSave, onNew
           aria-label="Имя персонажа"
           maxLength={60}
         />
-        <div className="stage-toggles">
-          <Seg label="Формат" items={FORMATS} value={format} onChange={setFormat} />
-          <Seg label="Стиль" items={STYLES} value={ch.style} onChange={(s) => update((c) => ({ ...c, style: s }))} />
+        <div className="seg" role="radiogroup" aria-label="Формат">
+          {FORMATS.map((f) => (
+            <button key={f.id} type="button" role="radio" aria-checked={format === f.id} className={format === f.id ? 'is-on' : ''} onClick={() => setFormat(f.id)}>
+              {f.label}
+            </button>
+          ))}
         </div>
         <div className={`canvas-wrap is-${format}`}>
-          <Avatar ch={ch} format={format} svgRef={svgRef} />
-        </div>
-        <div className="chips-block">
-          {format === 'full' && (
-            <div className="chips">
-              <span className="chips-label">Поза</span>
-              {POSES.map((p) => (
-                <button
-                  key={p.id}
-                  type="button"
-                  className={`chip ${ch.pose === p.id ? 'is-on' : ''}`}
-                  onClick={() => update((c) => ({ ...c, pose: p.id }))}
-                >
-                  {p.label}
-                </button>
-              ))}
-            </div>
-          )}
-          <div className="chips">
-            <span className="chips-label">Эмоция</span>
-            {EXPRESSIONS.map((p) => (
-              <button
-                key={p.id}
-                type="button"
-                className={`chip ${ch.expression === p.id ? 'is-on' : ''}`}
-                onClick={() => update((c) => ({ ...c, expression: p.id }))}
-              >
-                {p.label}
-              </button>
-            ))}
-          </div>
+          <TracedAvatar ch={ch} format={format} svgRef={svgRef} />
         </div>
         <div className="actions">
-          <button type="button" className="btn" onClick={() => update(randomize)}>
-            🎲 Случайно
+          <button type="button" className="btn" onClick={randomColors}>
+            🎲 Случайные цвета
           </button>
           <button type="button" className="btn icon" onClick={undo} disabled={!canUndo} title="Отменить" aria-label="Отменить">
             ↶
@@ -154,10 +89,10 @@ export function Editor({ ch, update, undo, redo, canUndo, canRedo, onSave, onNew
           <button type="button" className="btn primary" onClick={onSave}>
             Сохранить
           </button>
-          <button type="button" className="btn" onClick={exportPng} disabled={busy}>
+          <button type="button" className="btn" onClick={exportPng} disabled={busy || !data}>
             {busy ? '…' : 'PNG'}
           </button>
-          <button type="button" className="btn" onClick={() => svgRef.current && downloadSVG(svgRef.current, `${ch.name}-${format}`)}>
+          <button type="button" className="btn" disabled={!data} onClick={() => svgRef.current && downloadSVG(svgRef.current, `${ch.name}-${format}`)}>
             SVG
           </button>
           <button type="button" className="btn ghost" onClick={onNew}>
@@ -167,22 +102,27 @@ export function Editor({ ch, update, undo, redo, canUndo, canRedo, onSave, onNew
       </section>
 
       <section className="panel card">
-        <nav className="cats" aria-label="Категории">
-          {CATEGORIES.map((c) => (
-            <button key={c.id} type="button" className={`cat ${c.id === catId ? 'is-on' : ''}`} onClick={() => setCatId(c.id)}>
-              {c.label}
-            </button>
-          ))}
-        </nav>
         <div className="panel-body">
-          {cat.slots.map((slot) => (
-            <div key={slot.key} className="slot">
-              {cat.slots.length > 1 || slot.multi ? <h3>{slot.label}</h3> : null}
-              <PartGrid ch={ch} cat={cat} slot={slot} onPick={onPick} />
+          <div className="slot">
+            <h3>Персонаж</h3>
+            <div className="base-grid">
+              {bases.map((b) => (
+                <button
+                  key={b.id}
+                  type="button"
+                  className={`part ${ch.base === b.id ? 'is-selected' : ''}`}
+                  onClick={() => update((c) => ({ ...c, base: b.id }))}
+                >
+                  <span className="part-thumb">
+                    <TracedAvatar ch={{ ...ch, base: b.id }} format="portrait" />
+                  </span>
+                  <span className="part-label">{b.name}</span>
+                </button>
+              ))}
             </div>
-          ))}
-          {cat.colors.map((k) => (
-            <ColorRow key={k} k={k} value={ch.colors[k]} onChange={onColor} />
+          </div>
+          {ZONES.map((z) => (
+            <ColorRow key={z.id} zone={z.id} label={z.label} value={ch.colors[z.id]} original={data?.base[z.id]} onChange={onColor} />
           ))}
         </div>
       </section>

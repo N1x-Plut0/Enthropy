@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { newId, normalize, type Character } from '../model/character';
-import { Avatar } from '../render/Avatar';
+import { TracedAvatar } from '../render/TracedAvatar';
 import { downloadJSON } from '../render/export';
 
 interface Props {
@@ -69,7 +69,7 @@ export function Gallery({ items, currentId, onOpen, onDuplicate, onDelete, onImp
           {items.map((c) => (
             <article key={c.id} className={`g-card card ${c.id === currentId ? 'is-current' : ''}`}>
               <button type="button" className="g-thumb" onClick={() => onOpen(c)} aria-label={`Открыть ${c.name}`}>
-                <Avatar ch={c} format="portrait" />
+                <TracedAvatar ch={c} format="portrait" />
               </button>
               <div className="g-meta">
                 <strong>{c.name}</strong>

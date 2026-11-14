@@ -1,54 +1,13 @@
-export type StyleId = 'clean' | 'sketch';
 export type Format = 'full' | 'portrait';
-export type Pose = 'stand' | 'pockets';
-export type Expression = 'neutral' | 'smile' | 'happy' | 'wink' | 'pout' | 'surprised' | 'sad';
+export type Zone = 'hair' | 'skin' | 'top' | 'bottom' | 'shoes' | 'bg';
 
-export interface Parts {
-  face: string;
-  eyes: string;
-  brows: string;
-  nose: string;
-  mouth: string;
-  cheeks: string;
-  hair: string;
-  streak: string;
-  bangs: string;
-  top: string;
-  outer: string;
-  bottom: string;
-  shoes: string;
-  accessories: string[];
-  bgPattern: string;
-}
-
-export interface Colors {
-  skin: string;
-  hair: string;
-  streak: string;
-  eyes: string;
-  top: string;
-  outer: string;
-  bottom: string;
-  shoes: string;
-  accent: string;
-  bg: string;
-}
-
-export interface Character {
-  id: string;
-  name: string;
-  createdAt: number;
-  updatedAt: number;
-  style: StyleId;
-  pose: Pose;
-  expression: Expression;
-  parts: Parts;
-  colors: Colors;
-}
-
-export const STYLES: { id: StyleId; label: string }[] = [
-  { id: 'clean', label: 'Чистый лайн' },
-  { id: 'sketch', label: 'Скетч' },
+export const ZONES: { id: Zone; label: string }[] = [
+  { id: 'hair', label: 'Волосы' },
+  { id: 'skin', label: 'Кожа' },
+  { id: 'top', label: 'Верх' },
+  { id: 'bottom', label: 'Низ' },
+  { id: 'shoes', label: 'Обувь' },
+  { id: 'bg', label: 'Фон' },
 ];
 
 export const FORMATS: { id: Format; label: string }[] = [
@@ -56,113 +15,47 @@ export const FORMATS: { id: Format; label: string }[] = [
   { id: 'portrait', label: 'Лицо' },
 ];
 
-export const POSES: { id: Pose; label: string }[] = [
-  { id: 'pockets', label: 'Руки в карманах' },
-  { id: 'stand', label: 'Стоит' },
-];
+export interface Character {
+  id: string;
+  name: string;
+  createdAt: number;
+  updatedAt: number;
+  /** id of the traced base drawing (public/bases/<id>.json) */
+  base: string;
+  /** target colour per zone; a missing zone keeps the original drawing colour */
+  colors: Partial<Record<Zone, string>>;
+}
 
-export const EXPRESSIONS: { id: Expression; label: string }[] = [
-  { id: 'neutral', label: 'Спокойная' },
-  { id: 'smile', label: 'Улыбка' },
-  { id: 'happy', label: 'Радость' },
-  { id: 'wink', label: 'Подмигивает' },
-  { id: 'pout', label: 'Дуется' },
-  { id: 'surprised', label: 'Удивление' },
-  { id: 'sad', label: 'Грусть' },
-];
-
-export const PALETTES: Record<keyof Colors, string[]> = {
-  skin: ['#fdeee4', '#f7dccb', '#f0cdb4', '#e4b896', '#cf9a76', '#a87454', '#7d523b', '#573829'],
-  hair: [
-    '#26201f', '#45332f', '#6b4a38', '#93694b', '#b98f62', '#d9b57f', '#ecd9a8', '#d9d3cb',
-    '#8e8b93', '#6b3f4c', '#a24d48', '#c98aa0', '#3b4766', '#557993', '#6f8a6a',
-  ],
-  streak: ['#3e5a9a', '#5b86b8', '#7a5aa6', '#c96a8a', '#d9a8c0', '#d65a4a', '#e9e1d4', '#6faa8c', '#e3c46a'],
-  eyes: ['#2f241f', '#5e4130', '#8a643c', '#a8834e', '#5f7a4f', '#4a6e86', '#7f8fa8', '#9a5560', '#6b5a8a', '#3a3a3a'],
-  top: [],
-  outer: [],
-  bottom: [],
-  shoes: [],
-  accent: ['#c9a46c', '#d9d9d9', '#2b2427', '#e6e0d6', '#b5838d', '#7a96b8', '#a05a58', '#6e7f5e'],
-  bg: ['#6e5c63', '#5c5a4a', '#8a7a6a', '#f3ece0', '#efe6ef', '#e2ebe4', '#f4e0e0', '#dde6ef', '#2f2b33', '#3b4458'],
-};
-
-const CLOTHES = [
-  '#f4efe6', '#e3d9c6', '#c8b89e', '#8b7a6a', '#5a4d48', '#3a3336', '#242124',
-  '#a9b6c4', '#7891ad', '#4e6584', '#34405a', '#b4bfa4', '#6e7f5e',
-  '#d8b4b8', '#b06a68', '#7a3f48', '#6a4a6a', '#c9a46c',
-];
-PALETTES.top = CLOTHES;
-PALETTES.outer = CLOTHES;
-PALETTES.bottom = CLOTHES;
-PALETTES.shoes = CLOTHES;
-
-export const COLOR_LABELS: Record<keyof Colors, string> = {
-  skin: 'Кожа',
-  hair: 'Волосы',
-  streak: 'Окрашенные пряди',
-  eyes: 'Глаза',
-  top: 'Верх',
-  outer: 'Верхняя одежда',
-  bottom: 'Низ',
-  shoes: 'Обувь',
-  accent: 'Аксессуары / принт',
-  bg: 'Фон',
+export const PALETTES: Record<Zone, string[]> = {
+  hair: ['#2a2220', '#4a3630', '#6b4b3a', '#846b5d', '#a3825f', '#c9a46c', '#e3cf9c', '#d9d3cb', '#8e8b93', '#6b3f4c', '#a24d48', '#c98aa0', '#3b4766', '#557993', '#6f8a6a'],
+  skin: ['#f7e3d6', '#efd2bf', '#e2bca4', '#bb9d89', '#c9a07c', '#a8805e', '#80593f', '#5a3c2b'],
+  top: ['#f2ede4', '#d9cfbf', '#b5a58c', '#8b7a6a', '#574843', '#3a3336', '#232022', '#a9b6c4', '#5d7690', '#34405a', '#b4bfa4', '#6e7f5e', '#d8b4b8', '#a05a58', '#6a4a6a'],
+  bottom: ['#f2ede4', '#c8b89e', '#8b7a6a', '#4d3939', '#3a3336', '#232022', '#a9b6c4', '#5d7690', '#34405a', '#6e7f5e', '#7a3f48', '#6a4a6a'],
+  shoes: ['#f2ede4', '#c8b89e', '#493736', '#232022', '#5d7690', '#a05a58', '#d8b4b8', '#6e7f5e'],
+  bg: ['#715c5c', '#544e3c', '#6e6a78', '#3b4458', '#2f2b33', '#8a7a6a', '#f3ece0', '#efe6ef', '#dde6ef', '#e2ebe4'],
 };
 
 export function newId(): string {
   return Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
 }
 
-export function defaultCharacter(): Character {
+export function defaultCharacter(base = 'r1'): Character {
   const now = Date.now();
-  return {
-    id: newId(),
-    name: 'Новый персонаж',
-    createdAt: now,
-    updatedAt: now,
-    style: 'clean',
-    pose: 'pockets',
-    expression: 'neutral',
-    parts: {
-      face: 'sharp',
-      eyes: 'calm',
-      brows: 'thin',
-      nose: 'line',
-      mouth: 'small',
-      cheeks: 'blush',
-      hair: 'lowbun',
-      streak: 'none',
-      bangs: 'parted',
-      top: 'tee',
-      outer: 'none',
-      bottom: 'joggers',
-      shoes: 'sneakers',
-      accessories: ['studs'],
-      bgPattern: 'plain',
-    },
-    colors: {
-      skin: '#f2d6c4',
-      hair: '#a3825f',
-      streak: '#3e5a9a',
-      eyes: '#7a6248',
-      top: '#4d4546',
-      outer: '#5a4d48',
-      bottom: '#4a3639',
-      shoes: '#3f3638',
-      accent: '#d9b8b4',
-      bg: '#6e5c63',
-    },
-  };
+  return { id: newId(), name: 'Новый персонаж', createdAt: now, updatedAt: now, base, colors: {} };
 }
 
-/** Fill in any fields missing from older saved data. */
+/** Fill in missing fields; drops data from the old part-based format. */
 export function normalize(raw: Partial<Character>): Character {
   const d = defaultCharacter();
+  const colors: Partial<Record<Zone, string>> = {};
+  const rc = (raw.colors ?? {}) as Record<string, unknown>;
+  for (const z of ZONES) if (typeof rc[z.id] === 'string') colors[z.id] = rc[z.id] as string;
   return {
-    ...d,
-    ...raw,
-    parts: { ...d.parts, ...(raw.parts ?? {}) },
-    colors: { ...d.colors, ...(raw.colors ?? {}) },
-  } as Character;
+    id: raw.id || d.id,
+    name: raw.name || d.name,
+    createdAt: raw.createdAt ?? d.createdAt,
+    updatedAt: raw.updatedAt ?? d.updatedAt,
+    base: typeof raw.base === 'string' ? raw.base : d.base,
+    colors,
+  };
 }
