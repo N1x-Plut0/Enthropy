@@ -40,8 +40,8 @@ BASES = {
     'file': 'r2-front.svg',
     'face': [120, 10, 420, 460],
     'protos': {
-      'hair': ['#856f4b', '#836d50', '#836a49', '#9e7f5f', '#9d7e5e', '#866d4d', '#7e6849', '#675136'],
-      'skin': ['#a08061', '#977859', '#a27f5e', '#a07f5d'],
+      'hair': ['#856f4b', '#836d50', '#836a49', '#866d4d', '#7e6849', '#675136', '#7f6549', '#786045'],
+      'skin': ['#a08061', '#977859', '#a27f5e', '#a07f5d', '#96795c', '#9b7d5e'],
       'top': ['#918571', '#a9977e', '#aa987f', '#9a876f', '#a6967d'],
       'print': ['#443f31', '#3e382d', '#8a4a40'],
       'bottom': ['#403930', '#3c362b', '#413a31'],
@@ -63,6 +63,7 @@ BASES = {
     # zone may only appear inside these x ranges within the given y span
     'xlim': [
       ('skin', 470, 1000, [(0, 130), (430, 9999)]),
+      ('hair', 110, 370, [(0, 285), (415, 9999)]),
       ('print', 0, 9999, [(130, 470)]),
     ],
   },
@@ -87,7 +88,8 @@ def build(src_dir, out_dir):
             cx = (min(xs) + max(xs)) / 2 + float(tx)
             allowed = next(b[2] for b in cfg['bands'] if b[0] <= cy < b[1])
             for zone, y0, y1, ranges in cfg.get('xlim', []):
-                if zone in allowed and y0 <= cy < y1 and not any(a <= cx < b for a, b in ranges):
+                small = (max(xs) - min(xs)) < 150 and (max(ys) - min(ys)) < 150
+                if zone in allowed and small and y0 <= cy < y1 and not any(a <= cx < b for a, b in ranges):
                     allowed = [a for a in allowed if a != zone]
             c = rgb(fill.lower())
             z = min(allowed, key=lambda zz: min(dist(c, p) for p in protos[zz]))
